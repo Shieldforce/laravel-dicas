@@ -18,6 +18,8 @@ class LoginService
 
         $user = $request->user();
 
+        $user->tokens()->where("name", $request->client)->delete();
+
         $token = $user->createToken($request->client, []);
 
         return [

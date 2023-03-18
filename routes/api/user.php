@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\LoginController;
-use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [ LoginController::class, "login" ]);
+Route::prefix("user/")->name("user.")->group(function () {
 
-Route::middleware('auth:sanctum')->group(function () {
-
-    foreach (File::allFiles(__DIR__ . "/api") as $route_file) {
-        require $route_file->getPathname();
-    }
+    Route::get("/", [ UserController::class, "index" ])->name("index");
 
 });
