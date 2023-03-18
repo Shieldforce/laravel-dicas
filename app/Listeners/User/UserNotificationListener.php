@@ -2,8 +2,10 @@
 
 namespace App\Listeners\User;
 
+use App\Mail\UserStoreMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class UserNotificationListener
 {
@@ -14,10 +16,9 @@ class UserNotificationListener
 
     public function handle(object $event): void
     {
-        $request = $event->request;
+        // $request = $event->request;
         $user = $event->user;
 
-
-        //dd($event->request->validated());
+        Mail::to($user->email)->send(new UserStoreMail($user));
     }
 }
