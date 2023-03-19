@@ -1,0 +1,4 @@
+Horizon started successfully.
+Horizon started successfully.
+  2023-03-19 01:42:49 App\Mail\UserStoreMail ......................... RUNNING
+  2023-03-19 01:42:51 App\Mail\UserStoreMail ................. 2,702.27ms DONE
