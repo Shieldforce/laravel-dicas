@@ -19,6 +19,7 @@ class UserNotificationListener
         // $request = $event->request;
         $user = $event->user;
 
+
         Mail::to($user->email)->queue(new UserStoreMail($user));
     }
 }

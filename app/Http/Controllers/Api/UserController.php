@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\User\UserStoreEvent;
+use App\Exceptions\UserEsxception;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -26,11 +29,26 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $data = $request->validated();
+        DB::beginTransaction();
 
-        return new UserResource(
-            User::create($data)
-        );
+        try {
+            $data = $request->validated();
+
+            $create = User::create($data);
+
+            event(new UserStoreEvent($request, $create));
+
+            DB::commit();
+
+            return new UserResource(
+                $create
+            );
+        } catch (UserEsxception $exception) {
+
+            DB::rollBack();
+
+            throw $exception;
+        }
     }
 
     public function update(UpdateUserRequest $request, User $user)
