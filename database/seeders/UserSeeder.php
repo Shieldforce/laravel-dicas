@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -11,8 +12,6 @@ class UserSeeder extends Seeder
 
     public function run(): void
     {
-        $user = new User();
-
         $list = [
             [
                 'name'     => "Alexandre Ferreira",
@@ -36,7 +35,15 @@ class UserSeeder extends Seeder
                 "name"  => $user["name"],
                 "email" => $user["email"],
             ];
-            User::updateOrCreate($userNotPass, $user);
+            $userCreate = User::updateOrCreate($userNotPass, $user);
+
+            if($user["name"] != "Alexandre Ferreira") {
+                $userCreate->roles()->sync(Role::where("name", "Usuário Comum")->pluck("id"));
+            }
+
+            if($user["name"] == "Alexandre Ferreira") {
+                $userCreate->roles()->sync(Role::where("name", "Super Admin")->pluck("id"));
+            }
         }
     }
 }

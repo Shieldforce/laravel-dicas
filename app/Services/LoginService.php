@@ -20,7 +20,12 @@ class LoginService
 
         $user->tokens()->where("name", $request->client)->delete();
 
-        $token = $user->createToken($request->client, []);
+        SetupPermissionsService::handle();
+
+        $token = $user->createToken(
+            $request->client,
+            HasUserPermissionsService::getPermissions($user)
+        );
 
         return [
             "type_token"   => "Bearer",

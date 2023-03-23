@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\User\UserStoreEvent;
 use App\Listeners\User\UserNotificationListener;
+use App\Listeners\User\UserRolesSyncListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,7 +18,8 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         UserStoreEvent::class => [
-            UserNotificationListener::class
+            UserNotificationListener::class,
+            UserRolesSyncListener::class,
         ]
     ];
 

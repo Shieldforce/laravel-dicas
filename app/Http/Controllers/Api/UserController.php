@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('ability:user.index')->only('index');
+        $this->middleware('ability:user.show')->only('show');
+        $this->middleware('ability:user.store')->only('store');
+        $this->middleware('ability:user.update')->only('update');
+        $this->middleware('ability:user.destroy')->only('destroy');
+    }
+
     public function index()
     {
         return UserResource::collection(
